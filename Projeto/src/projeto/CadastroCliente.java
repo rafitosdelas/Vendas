@@ -71,7 +71,6 @@ public class CadastroCliente extends javax.swing.JFrame {
                 "Erro ao atualizar tabela de clientes: \n" + e.getMessage(),
                 "ERRO TABELA",
                 JOptionPane.ERROR_MESSAGE);
-            // e.printStackTrace(); // REMOVIDO
         }
     }
 
