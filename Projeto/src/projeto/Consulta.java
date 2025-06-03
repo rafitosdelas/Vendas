@@ -49,7 +49,7 @@ public class Consulta extends javax.swing.JFrame {
             return;
         }
 
-        tableModelVendas = (DefaultTableModel) jTable2.getModel();
+        tableModelVendas = (DefaultTableModel) tblVendas.getModel();
         configurarTabelaItensVenda();
 
         carregarClientesComboBoxFiltro();
@@ -78,7 +78,7 @@ public class Consulta extends javax.swing.JFrame {
                 }
             }
         };
-        jTable3.setModel(tableModelItensVenda); // itens
+        tblDetalhesVendas.setModel(tableModelItensVenda); // itens
     }
 
     private void carregarClientesComboBoxFiltro() {
@@ -92,7 +92,7 @@ public class Consulta extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar clientes para o filtro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
-        cmbClienteFiltro.setModel(model);
+        cmbCliente.setModel(model);
     }
 
     private void buscarVendas() {
@@ -119,8 +119,8 @@ public class Consulta extends javax.swing.JFrame {
             return;
         }
 
-        if (cmbClienteFiltro.getSelectedIndex() > 0) {
-            String clienteSelecionadoTexto = (String) cmbClienteFiltro.getSelectedItem();
+        if (cmbCliente.getSelectedIndex() > 0) {
+            String clienteSelecionadoTexto = (String) cmbCliente.getSelectedItem();
             try {
                 idClienteFiltro = Integer.parseInt(clienteSelecionadoTexto.split(" - ")[0]);
             } catch (Exception e) {
@@ -168,12 +168,12 @@ public class Consulta extends javax.swing.JFrame {
     }
     
     private void adicionarListenerTabelaVendas() {
-        jTable2.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        tblVendas.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting() && jTable2.getSelectedRow() != -1) {
-                    int linhaSelecionada = jTable2.getSelectedRow();
-                    Object idVendaObjeto = jTable2.getValueAt(linhaSelecionada, 0);
+                if (!e.getValueIsAdjusting() && tblVendas.getSelectedRow() != -1) {
+                    int linhaSelecionada = tblVendas.getSelectedRow();
+                    Object idVendaObjeto = tblVendas.getValueAt(linhaSelecionada, 0);
 
                     if (idVendaObjeto != null) {
                         try {
@@ -183,7 +183,7 @@ public class Consulta extends javax.swing.JFrame {
                             tableModelItensVenda.setRowCount(0); 
                         }
                     }
-                } else if (jTable2.getSelectedRow() == -1) {
+                } else if (tblVendas.getSelectedRow() == -1) {
                      tableModelItensVenda.setRowCount(0);
                 }
             }
@@ -225,36 +225,38 @@ public class Consulta extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        lblDataInicial = new javax.swing.JLabel();
+        lblDataFinal = new javax.swing.JLabel();
+        lblCliente = new javax.swing.JLabel();
+        lblDataExemplo = new javax.swing.JLabel();
         txtDataInicial = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
         txtDataFinal = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         btnLimpar = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        cmbClienteFiltro = new javax.swing.JComboBox<>();
+        cmbCliente = new javax.swing.JComboBox<>();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblVendas = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tblDetalhesVendas = new javax.swing.JTable();
         btnSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consultar Venda");
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setText("Data inicial");
+        lblDataInicial.setText("Data inicial");
+
+        lblDataFinal.setText("Data final");
+
+        lblCliente.setText("Cliente");
+
+        lblDataExemplo.setText("dd/MM/aaaa");
 
         txtDataInicial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDataInicialActionPerformed(evt);
             }
         });
-
-        jLabel2.setText("Data final");
-
-        jLabel3.setText("Cliente");
 
         btnBuscar.setBackground(new java.awt.Color(153, 204, 255));
         btnBuscar.setText("Buscar");
@@ -272,16 +274,14 @@ public class Consulta extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("dd/MM/aaaa");
-
-        cmbClienteFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbClienteFiltro.addActionListener(new java.awt.event.ActionListener() {
+        cmbCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbClienteFiltroActionPerformed(evt);
+                cmbClienteActionPerformed(evt);
             }
         });
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblVendas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -304,17 +304,17 @@ public class Consulta extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.setMaximumSize(new java.awt.Dimension(400, 260));
-        jTable2.setPreferredSize(new java.awt.Dimension(400, 260));
-        jTable2.getTableHeader().setReorderingAllowed(false);
-        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblVendas.setMaximumSize(new java.awt.Dimension(400, 260));
+        tblVendas.setPreferredSize(new java.awt.Dimension(400, 260));
+        tblVendas.getTableHeader().setReorderingAllowed(false);
+        tblVendas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable2MouseClicked(evt);
+                tblVendasMouseClicked(evt);
             }
         });
-        jScrollPane4.setViewportView(jTable2);
+        jScrollPane4.setViewportView(tblVendas);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tblDetalhesVendas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -337,15 +337,15 @@ public class Consulta extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable3.setMaximumSize(new java.awt.Dimension(400, 260));
-        jTable3.setPreferredSize(new java.awt.Dimension(400, 260));
-        jTable3.getTableHeader().setReorderingAllowed(false);
-        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblDetalhesVendas.setMaximumSize(new java.awt.Dimension(400, 260));
+        tblDetalhesVendas.setPreferredSize(new java.awt.Dimension(400, 260));
+        tblDetalhesVendas.getTableHeader().setReorderingAllowed(false);
+        tblDetalhesVendas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable3MouseClicked(evt);
+                tblDetalhesVendasMouseClicked(evt);
             }
         });
-        jScrollPane5.setViewportView(jTable3);
+        jScrollPane5.setViewportView(tblDetalhesVendas);
 
         btnSair.setBackground(new java.awt.Color(153, 204, 255));
         btnSair.setText("Sair");
@@ -367,18 +367,18 @@ public class Consulta extends javax.swing.JFrame {
                         .addComponent(jScrollPane4)
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(lblCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblDataInicial, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblDataFinal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGap(30, 30, 30)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(txtDataInicial, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
                                 .addComponent(txtDataFinal, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(cmbClienteFiltro, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cmbCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
                                     .addGap(10, 10, 10)
-                                    .addComponent(jLabel6))
+                                    .addComponent(lblDataExemplo))
                                 .addGroup(layout.createSequentialGroup()
                                     .addGap(250, 250, 250)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -392,18 +392,18 @@ public class Consulta extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(lblDataInicial)
                     .addComponent(txtDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addComponent(lblDataExemplo))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(lblDataFinal)
                     .addComponent(txtDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(cmbClienteFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCliente)
+                    .addComponent(cmbCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLimpar))
                 .addGap(20, 20, 20)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -420,8 +420,8 @@ public class Consulta extends javax.swing.JFrame {
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         txtDataInicial.setText("");
         txtDataFinal.setText("");
-        if (cmbClienteFiltro.getItemCount() > 0) {
-            cmbClienteFiltro.setSelectedIndex(0);
+        if (cmbCliente.getItemCount() > 0) {
+            cmbCliente.setSelectedIndex(0);
         }
         buscarVendas();
     }//GEN-LAST:event_btnLimparActionPerformed
@@ -434,17 +434,17 @@ public class Consulta extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txtDataInicialActionPerformed
 
-    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+    private void tblDetalhesVendasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDetalhesVendasMouseClicked
 
-    }//GEN-LAST:event_jTable3MouseClicked
+    }//GEN-LAST:event_tblDetalhesVendasMouseClicked
 
-    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+    private void tblVendasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblVendasMouseClicked
      
-    }//GEN-LAST:event_jTable2MouseClicked
+    }//GEN-LAST:event_tblVendasMouseClicked
 
-    private void cmbClienteFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClienteFiltroActionPerformed
+    private void cmbClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClienteActionPerformed
     
-    }//GEN-LAST:event_cmbClienteFiltroActionPerformed
+    }//GEN-LAST:event_cmbClienteActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         dispose();
@@ -454,15 +454,15 @@ public class Consulta extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnSair;
-    private javax.swing.JComboBox<String> cmbClienteFiltro;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JComboBox<String> cmbCliente;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
+    private javax.swing.JLabel lblCliente;
+    private javax.swing.JLabel lblDataExemplo;
+    private javax.swing.JLabel lblDataFinal;
+    private javax.swing.JLabel lblDataInicial;
+    private javax.swing.JTable tblDetalhesVendas;
+    private javax.swing.JTable tblVendas;
     private javax.swing.JTextField txtDataFinal;
     private javax.swing.JTextField txtDataInicial;
     // End of variables declaration//GEN-END:variables

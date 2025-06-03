@@ -97,11 +97,11 @@ public class CadastroCliente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        lblId = new javax.swing.JLabel();
+        lblNome = new javax.swing.JLabel();
+        lblCPF = new javax.swing.JLabel();
+        lblEmail = new javax.swing.JLabel();
+        lblTel = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         txtNome = new javax.swing.JTextField();
         txtCPF = new javax.swing.JTextField();
@@ -120,15 +120,15 @@ public class CadastroCliente extends javax.swing.JFrame {
         setTitle("Cadastro de Clientes");
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setText("ID:");
+        lblId.setText("ID:");
 
-        jLabel2.setText("Nome:");
+        lblNome.setText("Nome:");
 
-        jLabel3.setText("CPF/CNPJ:");
+        lblCPF.setText("CPF/CNPJ:");
 
-        jLabel4.setText("Email");
+        lblEmail.setText("Email");
 
-        jLabel5.setText("Telefone");
+        lblTel.setText("Telefone");
 
         txtId.setEditable(false);
         txtId.addActionListener(new java.awt.event.ActionListener() {
@@ -232,11 +232,11 @@ public class CadastroCliente extends javax.swing.JFrame {
                             .addComponent(jScrollPane1)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(lblTel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblCPF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(30, 30, 30)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -268,17 +268,17 @@ public class CadastroCliente extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(lblId)
                     .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(lblNome)
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(3, 3, 3)
-                        .addComponent(jLabel3))
+                        .addComponent(lblCPF))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnInserir)))
@@ -291,7 +291,7 @@ public class CadastroCliente extends javax.swing.JFrame {
                             .addComponent(btnAlterar)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(13, 13, 13)
-                        .addComponent(jLabel4)))
+                        .addComponent(lblEmail)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
@@ -301,7 +301,7 @@ public class CadastroCliente extends javax.swing.JFrame {
                             .addComponent(btnRemover)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(13, 13, 13)
-                        .addComponent(jLabel5)))
+                        .addComponent(lblTel)))
                 .addGap(20, 20, 20)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
@@ -524,12 +524,12 @@ public class CadastroCliente extends javax.swing.JFrame {
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnRemover;
     private javax.swing.JButton btnSair;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblCPF;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblId;
+    private javax.swing.JLabel lblNome;
+    private javax.swing.JLabel lblTel;
     private javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtCPF;
     private javax.swing.JTextField txtEmail;

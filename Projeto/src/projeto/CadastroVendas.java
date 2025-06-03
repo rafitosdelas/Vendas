@@ -78,20 +78,20 @@ public class CadastroVendas extends javax.swing.JFrame {
 
 
     private void iniciarNovaVenda() {
-        jTextField1.setText(""); // ID Venda (gerado pelo banco)
-        jTextField2.setText("0.00"); // Valor total
-        jTextField2.setEditable(false);
+        txtId.setText(""); // ID Venda (gerado pelo banco)
+        txtValorTotal.setText("0.00"); // Valor total
+        txtValorTotal.setEditable(false);
 
-        jComboBox1.setSelectedIndex(-1); // Cliente
-        jComboBox2.setSelectedIndex(0); // Forma de Pagamento
-        jComboBox3.setSelectedIndex(-1); // Produto
-        jSpinner1.setValue(1);       // Quantidade
+        cmbCliente.setSelectedIndex(-1); // Cliente
+        cmbPgto.setSelectedIndex(0); // Forma de Pagamento
+        cmbProduto.setSelectedIndex(-1); // Produto
+        spnQnt.setValue(1);       // Quantidade
 
         carrinhoDeCompras.clear();
         atualizarTabelaCarrinho();
         atualizarValorTotalVenda();
 
-        jButton4.setEnabled(false); // Botão Remover Item
+        btnRemover.setEnabled(false); // Botão Remover Item
     }
 
     private String getCurrentFormattedDate() {
@@ -110,7 +110,7 @@ public class CadastroVendas extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar clientes: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
-        jComboBox1.setModel(model);
+        cmbCliente.setModel(model);
     }
 
     private void carregarProdutosComboBox() {
@@ -124,7 +124,7 @@ public class CadastroVendas extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar produtos: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
-        jComboBox3.setModel(model);
+        cmbProduto.setModel(model);
     }
 
     private void carregarFormasPagamentoComboBox() {
@@ -133,20 +133,20 @@ public class CadastroVendas extends javax.swing.JFrame {
         model.addElement("Cartão de Crédito");
         model.addElement("Cartão de Débito");
         model.addElement("PIX");
-        jComboBox2.setModel(model);
+        cmbPgto.setModel(model);
     }
 
     // Dentro da sua classe CadastroVendas.java
 
     private void adicionarItemAoCarrinho() {
-        if (jComboBox3.getSelectedIndex() <= 0) { 
+        if (cmbProduto.getSelectedIndex() <= 0) { 
             JOptionPane.showMessageDialog(this, "Selecione um produto!", "Atenção", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         int quantidadeParaAdicionar;
         try {
-            quantidadeParaAdicionar = (Integer) jSpinner1.getValue();
+            quantidadeParaAdicionar = (Integer) spnQnt.getValue();
             if (quantidadeParaAdicionar <= 0) {
                 JOptionPane.showMessageDialog(this, "A quantidade deve ser maior que zero!", "Atenção", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -157,7 +157,7 @@ public class CadastroVendas extends javax.swing.JFrame {
         }
 
         try {
-            String produtoSelecionadoTexto = (String) jComboBox3.getSelectedItem();
+            String produtoSelecionadoTexto = (String) cmbProduto.getSelectedItem();
             int idProduto = Integer.parseInt(produtoSelecionadoTexto.split(" - ")[0]);
             Produtos produtoDoBanco = produtoController.findProdutos(idProduto);
 
@@ -219,9 +219,9 @@ public class CadastroVendas extends javax.swing.JFrame {
     }
     
     private void limparCamposAdicionarProduto(){
-        jComboBox3.setSelectedIndex(0); // Produto
-        jSpinner1.setValue(1);       // Quantidade
-        jComboBox3.requestFocus();
+        cmbProduto.setSelectedIndex(0); // Produto
+        spnQnt.setValue(1);       // Quantidade
+        cmbProduto.requestFocus();
     }
 
     private void removerItemDoCarrinho() {
@@ -230,7 +230,7 @@ public class CadastroVendas extends javax.swing.JFrame {
             carrinhoDeCompras.remove(selectedRow);
             atualizarTabelaCarrinho();
             atualizarValorTotalVenda();
-            jButton4.setEnabled(false); 
+            btnRemover.setEnabled(false); 
         } else {
             JOptionPane.showMessageDialog(this, "Selecione um item da lista para remover.", "Atenção", JOptionPane.WARNING_MESSAGE);
         }
@@ -254,7 +254,7 @@ public class CadastroVendas extends javax.swing.JFrame {
         for (ItemVendaCarrinho item : carrinhoDeCompras) {
             total = total.add(item.subtotal);
         }
-        jTextField2.setText(total.setScale(2, RoundingMode.HALF_UP).toString()); 
+        txtValorTotal.setText(total.setScale(2, RoundingMode.HALF_UP).toString()); 
     }
 
     private void finalizarVenda() {
@@ -265,14 +265,14 @@ public class CadastroVendas extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Não há itens no carrinho para finalizar a venda!", "Validação da Venda", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (jComboBox2.getSelectedItem() == null || jComboBox2.getSelectedIndex() < 0) { 
+        if (cmbPgto.getSelectedItem() == null || cmbPgto.getSelectedIndex() < 0) { 
             JOptionPane.showMessageDialog(this, "Por favor, selecione uma forma de pagamento!", "Validação da Venda", JOptionPane.WARNING_MESSAGE);
-            jComboBox2.requestFocus();
+            cmbPgto.requestFocus();
             return;
         }
 
         // Lógica para pegar o cliente:
-        if (jComboBox1.getSelectedIndex() <= 0) {
+        if (cmbCliente.getSelectedIndex() <= 0) {
             final int ID_CONSUMIDOR_FINAL = 1; // "CONSUMIDOR FINAL"
             clienteSelecionado = clienteController.findClientes(ID_CONSUMIDOR_FINAL);
             if (clienteSelecionado == null) {
@@ -285,7 +285,7 @@ public class CadastroVendas extends javax.swing.JFrame {
             idClienteParaVenda = clienteSelecionado.getIdCliente();
         } else {
             // Usuário selecionou um cliente específico
-            String clienteSelecionadoTexto = (String) jComboBox1.getSelectedItem();
+            String clienteSelecionadoTexto = (String) cmbCliente.getSelectedItem();
             int idClienteExtraido = Integer.parseInt(clienteSelecionadoTexto.split(" - ")[0]);
             clienteSelecionado = clienteController.findClientes(idClienteExtraido);
 
@@ -300,8 +300,8 @@ public class CadastroVendas extends javax.swing.JFrame {
             Vendas novaVenda = new Vendas();
             novaVenda.setIdCliente(idClienteParaVenda); 
             novaVenda.setDataVenda(java.sql.Timestamp.valueOf(LocalDateTime.now()));
-            novaVenda.setFormaPagamento((String) jComboBox2.getSelectedItem());
-            novaVenda.setValorTotal(new BigDecimal(jTextField2.getText().replace(",", ".")));
+            novaVenda.setFormaPagamento((String) cmbPgto.getSelectedItem());
+            novaVenda.setValorTotal(new BigDecimal(txtValorTotal.getText().replace(",", ".")));
 
             vendaController.create(novaVenda);
             if (novaVenda.getIdVenda() == null) {
@@ -338,11 +338,11 @@ public class CadastroVendas extends javax.swing.JFrame {
             }
 
             JOptionPane.showMessageDialog(this, "Venda finalizada com sucesso! ID da Venda: " + idDaVendaGerado, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            jTextField1.setText(String.valueOf(idDaVendaGerado)); 
+            txtId.setText(String.valueOf(idDaVendaGerado)); 
 
-            jButton2.setEnabled(false); // Botão Adicionar Item
-            jButton4.setEnabled(false); // Botão Remover Item
-            jButton5.setEnabled(false); // Botão Finalizar Venda
+            btnInserir.setEnabled(false); // Botão Adicionar Item
+            btnRemover.setEnabled(false); // Botão Remover Item
+            btnFinalizar.setEnabled(false); // Botão Finalizar Venda
 
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(this, "Erro ao converter ID do cliente.\nDetalhe: " + nfe.getMessage(), "Erro de Formato", JOptionPane.ERROR_MESSAGE);
@@ -353,25 +353,25 @@ public class CadastroVendas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jLabel6 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jLabel7 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        lblId = new javax.swing.JLabel();
+        lblCliente = new javax.swing.JLabel();
+        lblFormaPgto = new javax.swing.JLabel();
+        lblProduto = new javax.swing.JLabel();
+        lblValorTotal = new javax.swing.JLabel();
+        lblQnt = new javax.swing.JLabel();
+        txtValorTotal = new javax.swing.JTextField();
+        txtId = new javax.swing.JTextField();
+        cmbCliente = new javax.swing.JComboBox<>();
+        cmbPgto = new javax.swing.JComboBox<>();
+        cmbProduto = new javax.swing.JComboBox<>();
+        spnQnt = new javax.swing.JSpinner();
+        btnInserir = new javax.swing.JButton();
+        btnRemover = new javax.swing.JButton();
+        btnFinalizar = new javax.swing.JButton();
+        btnNovaVenda = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        tblVendas = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -379,46 +379,80 @@ public class CadastroVendas extends javax.swing.JFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setSize(new java.awt.Dimension(0, 0));
 
-        jLabel1.setText("ID:");
+        lblId.setText("ID:");
 
-        jTextField1.setEditable(false);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        lblCliente.setText("Cliente");
+
+        lblFormaPgto.setText("Forma pgto");
+
+        lblProduto.setText("Produto");
+
+        lblValorTotal.setText("VALOR TOTAL: R$");
+
+        lblQnt.setText("Qnt");
+
+        txtValorTotal.setEditable(false);
+        txtValorTotal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtValorTotalActionPerformed(evt);
             }
         });
 
-        jLabel2.setText("Cliente");
-
-        jLabel4.setText("Forma pgto");
-
-        jButton2.setBackground(new java.awt.Color(153, 204, 255));
-        jButton2.setText("Inserir");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        txtId.setEditable(false);
+        txtId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                txtIdActionPerformed(evt);
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        cmbCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                cmbClienteActionPerformed(evt);
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        cmbPgto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbPgto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                cmbPgtoActionPerformed(evt);
             }
         });
 
-        jLabel6.setText("Produto");
+        cmbProduto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        btnInserir.setBackground(new java.awt.Color(153, 204, 255));
+        btnInserir.setText("Inserir");
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
 
-        jLabel7.setText("Qnt");
+        btnRemover.setBackground(new java.awt.Color(153, 204, 255));
+        btnRemover.setText("Remover");
+        btnRemover.setEnabled(false);
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
+
+        btnFinalizar.setBackground(new java.awt.Color(153, 204, 255));
+        btnFinalizar.setText("Finalizar");
+        btnFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinalizarActionPerformed(evt);
+            }
+        });
+
+        btnNovaVenda.setBackground(new java.awt.Color(153, 204, 255));
+        btnNovaVenda.setText("Nova Venda");
+        btnNovaVenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovaVendaActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -449,43 +483,9 @@ public class CadastroVendas extends javax.swing.JFrame {
                 jTable1MouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        tblVendas.setViewportView(jTable1);
 
-        jScrollPane2.setViewportView(jScrollPane1);
-
-        jButton4.setBackground(new java.awt.Color(153, 204, 255));
-        jButton4.setText("Remover");
-        jButton4.setEnabled(false);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
-        jLabel5.setText("VALOR TOTAL: R$");
-
-        jTextField2.setEditable(false);
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-
-        jButton5.setBackground(new java.awt.Color(153, 204, 255));
-        jButton5.setText("Finalizar");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
-        jButton6.setBackground(new java.awt.Color(153, 204, 255));
-        jButton6.setText("Nova Venda");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
+        jScrollPane2.setViewportView(tblVendas);
 
         btnSair.setBackground(new java.awt.Color(153, 204, 255));
         btnSair.setText("Sair");
@@ -502,46 +502,45 @@ public class CadastroVendas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(348, 348, 348))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE))
+                                    .addComponent(lblProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblFormaPgto, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE))
                                 .addGap(30, 30, 30)
-                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cmbProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(20, 20, 20)
-                                .addComponent(jLabel7)
+                                .addComponent(lblQnt)
                                 .addGap(10, 10, 10)
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(spnQnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(20, 20, 20)
-                                .addComponent(jButton2))
+                                .addComponent(btnInserir))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblId, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+                                    .addComponent(lblCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(30, 30, 30)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField1))))
+                                    .addComponent(cmbPgto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cmbCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtId))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton4)
+                            .addComponent(btnRemover)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
+                                .addComponent(lblValorTotal)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(240, 240, 240)
                                 .addComponent(btnSair)
                                 .addGap(15, 15, 15)
-                                .addComponent(jButton6)
+                                .addComponent(btnNovaVenda)
                                 .addGap(15, 15, 15)
-                                .addComponent(jButton5)))))
+                                .addComponent(btnFinalizar)))))
                 .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
@@ -549,32 +548,32 @@ public class CadastroVendas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblId)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblCliente)
+                    .addComponent(cmbCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblFormaPgto)
+                    .addComponent(cmbPgto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton4))
+                    .addComponent(lblProduto)
+                    .addComponent(cmbProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblQnt)
+                    .addComponent(spnQnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnInserir)
+                    .addComponent(btnRemover))
                 .addGap(20, 20, 20)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6)
+                    .addComponent(lblValorTotal)
+                    .addComponent(txtValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFinalizar)
+                    .addComponent(btnNovaVenda)
                     .addComponent(btnSair))
                 .addGap(10, 10, 10))
         );
@@ -582,72 +581,72 @@ public class CadastroVendas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
         
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
         adicionarItemAoCarrinho();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnInserirActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
                 if (jTable1.getSelectedRow() != -1) {
-            jButton4.setEnabled(true);
+            btnRemover.setEnabled(true);
         } else {
-            jButton4.setEnabled(false);
+            btnRemover.setEnabled(false);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
         // ID da Venda
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtIdActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void cmbClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbClienteActionPerformed
        
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_cmbClienteActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void cmbPgtoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPgtoActionPerformed
    
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    }//GEN-LAST:event_cmbPgtoActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
         removerItemDoCarrinho();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnRemoverActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txtValorTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtValorTotalActionPerformed
 
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtValorTotalActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
         finalizarVenda();
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btnFinalizarActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void btnNovaVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovaVendaActionPerformed
         iniciarNovaVenda();
-        jButton2.setEnabled(true);
-        jButton5.setEnabled(true); 
-    }//GEN-LAST:event_jButton6ActionPerformed
+        btnInserir.setEnabled(true);
+        btnFinalizar.setEnabled(true); 
+    }//GEN-LAST:event_btnNovaVendaActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFinalizar;
+    private javax.swing.JButton btnInserir;
+    private javax.swing.JButton btnNovaVenda;
+    private javax.swing.JButton btnRemover;
     private javax.swing.JButton btnSair;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox<String> cmbCliente;
+    private javax.swing.JComboBox<String> cmbPgto;
+    private javax.swing.JComboBox<String> cmbProduto;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel lblCliente;
+    private javax.swing.JLabel lblFormaPgto;
+    private javax.swing.JLabel lblId;
+    private javax.swing.JLabel lblProduto;
+    private javax.swing.JLabel lblQnt;
+    private javax.swing.JLabel lblValorTotal;
+    private javax.swing.JSpinner spnQnt;
+    private javax.swing.JScrollPane tblVendas;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtValorTotal;
     // End of variables declaration//GEN-END:variables
 }
